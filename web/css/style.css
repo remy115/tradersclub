@@ -1,0 +1,35 @@
+* {font-family: Arial, Helvetica, sans-serif;}
+
+body {width:100%;margin:0;padding:0;text-align:center;}
+#screen {width:1020px; margin:auto; background:#e2e4e1; text-align:left; display:inline-block; position: relative;}
+.top-bar {color:#fff; width:100%; box-sizing:border-box; position: relative; height:64px;}
+.top-bar > div {width:50%; box-sizing: inherit; position: inherit; float:left;}
+.top-bar > div .material-icons.left {margin-left:5px 15px 5px 15px; color:#fff; font-size:36px; margin-top:5px;}
+.top-bar-AppBar {background:#364147 !important;}
+.top-bar-AppBar > h1 {padding-left:12px;}
+.top-bar > div:last-child {background:#2a3138; color:#f0f0f0;float:right; height:100%; padding-left:20px;}
+.search-field {margin-top:10px;}
+.search-field * {color:inherit;}
+
+main {padding:0 40px;}
+
+/* title-add */
+.title-add {margin-top:40px; margin-bottom: 25px; padding-bottom:25px; border-bottom:1px solid #babbb9; padding-right:35px; box-sizing: border-box; position:relative; color:#606060; font-size:36px;}
+.title-add h2 {margin:0; color:inherit; font-size: inherit;}
+.title-add .add-vehicle {position:absolute; right:0; top:0; color:inherit; font-size:inherit; cursor:pointer;}
+
+
+/* contents */
+.contents {width:460px;padding-bottom:80px;}
+.contents h2 {font-size:20px; color:#404040;}
+
+/* itemList */
+.itemList {background:#fff;width:100%; padding:15px 30px 15px 12px; color:#404040; font-size:16px; position:relative; min-height:80px; box-sizing:border-box;}
+.itemList + .itemList {margin-top:10px;}
+.itemList p {margin:2px 0;}
+.itemList .itemTitle {font-size:inherit; color:inherit;}
+.itemList .itemDescr {font-size:inherit; color:#1d7555;}
+.itemList .itemYear {font-size:inherit; color:#8d9395;}
+.itemList .itemFlag {position:absolute; right:22px; top:28px; }
+.itemList .itemFlag > .material-icons {font-size:36px;}
+.itemList .itemSold {color:#189c6c;}
