@@ -2,6 +2,20 @@ import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import TextField from 'material-ui/TextField';
 
+class Flag extends React.Component {
+    constructor(props) {
+        super(props)
+        this.vendido=this.props.vendido ? ' itemSold' : '';
+        this.class=this.props.class || ' flag';
+    }
+
+    render() {
+        return (
+            <span className="itemFlag flag1"><i className={"material-icons"+this.class+this.vendido}>local_offer</i></span>
+        )
+    }
+}
+
 class Topbar extends React.Component {
     constructor(props) {
         super(props)
@@ -41,4 +55,4 @@ class TitleAdd extends React.Component {
     }
 }
 
-module.exports={Topbar,TitleAdd}
+module.exports={Topbar,TitleAdd, Flag}
