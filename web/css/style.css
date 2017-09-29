@@ -12,11 +12,17 @@ body {width:100%;margin:0;padding:0;text-align:center;}
 .search-field * {color:inherit;}
 
 
-main {padding:0 40px;}
+.hidden, body .hidden {display:none;}
+main {padding:0 40px; display:inline-block; box-sizing:border-box; width:100%;}
+
+#appRoot {position:relative;}
+.cover1 {position:absolute; top:0; left:0; width:100%; height:100%; background:#e0e0e0; opacity: 0.8; cursor:progress; text-align:center; z-index:2000;}
+.cover1 img {width:150px; height:150px; margin-top:200px;}
 
 /* Flag */
 body .flag {font-size:24px;margin-top:5px;}
 body .flag1 {cursor:default;}
+
 
 /* From Add/Edit */
 .form-add-edit {text-align:left; width:700px !important;}
@@ -58,8 +64,8 @@ body .flag1 {cursor:default;}
 /*.itemList .itemFlag > .material-icons {font-size:36px;}*/
 
 /* itemList itemDescr */
-.itemList .itemSold, .itemDescrMain h2 {color:#189c6c;}
-.itemDescrMain, .itemList:hover {background:#f1f2f0;}
+.itemFlag.flag1 .itemSold, .itemList .itemSold, .itemDescrMain h2 {color:#189c6c;}
+.itemDescrMain, .itemList:hover, .itemListSelected {background:#f1f2f0;}
 
 /* itemDescr */
 .itemDescrMain > div.main, .itemDescrMain > div.footer {padding:15px;}

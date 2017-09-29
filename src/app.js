@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import $ from 'jquery';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
@@ -9,7 +10,11 @@ import Divider from 'material-ui/Divider';
 import Dialog from 'material-ui/Dialog';
 import Toggle from 'material-ui/Toggle';
 
-import {Topbar,TitleAdd,Flag} from './components';
+import {Topbar,TitleAdd,Flag,Form1} from './components';
+
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 
 class ItemList extends React.Component {
     constructor(props) {
@@ -24,12 +29,14 @@ class ItemList extends React.Component {
 
     render() {
         const item=this.props.item;
+        const selected=this.props.selected ? ' itemListSelected' : '';
+
         const marca=item.marca;
         const ano=item.ano || '(N/D)'; // muitos registros não tem a propriedade "ano"
         const veiculo=item.veiculo;
-        const vendido=item.vendido ? ' itemSold' : '';
+        const vendido=item.vendido;
         return (
-            <div className="itemList" onClick={this.onClick}>
+            <div className={"itemList"+selected} onClick={this.onClick}>
                 <p className="itemTitle">{marca}</p>
                 <p className="itemDescr">{veiculo}</p>
                 <p className="itemYear">{ano}</p>
@@ -43,12 +50,19 @@ class ItemList extends React.Component {
 class ContentDescr extends React.Component {
     constructor(props) {
         super(props)
+
+        this.openForm=this.openForm.bind(this);
+    }
+
+    openForm() {
+        this.props.openForm(this.props.item);
     }
 
     render() {
         const item=this.props.item;
         var render;
         if(item) {
+            const id=item._id;
             const marca=item.marca;
             const ano=item.ano || '(N/D)'; // muitos registros não tem a propriedade "ano"
             const veiculo=item.veiculo;
@@ -59,6 +73,7 @@ class ContentDescr extends React.Component {
                 
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
             }
+            descricao=htmlEntities(descricao);
             descricao=descricao.replace('\n','<br>');
             render=(
                 <div className="itemDescrMain">
@@ -72,11 +87,11 @@ class ContentDescr extends React.Component {
                                 <tr><td>{marca}</td><td>{ano}</td></tr>
                             </tbody>
                         </table>
-                        <p>{descricao}</p>
+                        <p dangerouslySetInnerHTML={{__html:descricao}}></p>
                     </div>
                     <hr className="" />
                     <div className="footer">
-                        <FlatButton backgroundColor="#45535a" hoverColor="#45535a" className="createButton" label="Editar" labelPosition="after" icon={<i className="material-icons">create</i>} />
+                        <FlatButton backgroundColor="#45535a" hoverColor="#45535a" className="createButton" label="Editar" labelPosition="after" icon={<i className="material-icons">create</i>} onClick={this.openForm} />
                         <Flag vendido={vendido} />
                     </div>
                 </div>
@@ -99,14 +114,19 @@ class ContentList extends React.Component {
     constructor(props) {
         super(props)
 
-        this.items=[{"_id":"5991c31cc54c131fd9b9ee1b","veiculo":"ONIX HATCH LT 1.0 8V FlexPower 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004424-5","vendido":false},{"_id":"5991c31cc54c131fd9b9ee1d","veiculo":"ONIX HATCH LT 1.4 8V FlexPower 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004425-3","vendido":false},{"_id":"5991c31cc54c131fd9b9ee19","veiculo":"ONIX HATCH Joy 1.0 8V Flex 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004473-3","vendido":false},{"_id":"5991c31cc54c131fd9b9ee16","veiculo":"ONIX HATCH ACTIV 1.4 8V Flex 5P Aut.","marca":"GM - Chevrolet","cod_fipe":"004471-7","vendido":false},{"_id":"5991c31cc54c131fd9b9ee15","veiculo":"ONIX  Lollapalooza 1.0 F.Power 5p Mec. ","marca":"GM - Chevrolet","cod_fipe":"004451-2","vendido":false},{"_id":"5991c31cc54c131fd9b9ee17","veiculo":"ONIX HATCH ACTIV 1.4 8V Flex 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004472-5","vendido":false},{"_id":"5991c31cc54c131fd9b9ee1f","veiculo":"ONIX HATCH LTZ 1.4 8V FlexPower 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004426-1","vendido":false},{"_id":"5991c31cc54c131fd9b9ee1e","veiculo":"ONIX HATCH LTZ 1.4 8V FlexPower 5p Aut. ","marca":"GM - Chevrolet","cod_fipe":"004439-3","vendido":false},{"_id":"5991c31cc54c131fd9b9ee18","veiculo":"ONIX HATCH EFFECT 1.4 8V F.Power 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004460-1","vendido":false},{"_id":"5991c31cc54c131fd9b9ee1c","veiculo":"ONIX HATCH LT 1.4 8V FlexPower 5p Aut.","marca":"GM - Chevrolet","cod_fipe":"004438-5","vendido":false},{"_id":"5991c31cc54c131fd9b9ee1a","veiculo":"ONIX HATCH LS 1.0 8V FlexPower 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004423-7","vendido":false},{"_id":"5991c31cc54c131fd9b9ee20","veiculo":"ONIX HATCH SELEÇÃO 1.0 8V Flex 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004461-0","vendido":false}]
-
-        this.items=this.items.splice(0,5);
     } // constructor
 
+    /* componentWillReceiveProps(newProps) {
+        console.log('newProps',newProps);
+        if(newProps.selected !== this.props.selected) {
+            this.forceUpdate();
+        }
+    } */
+
     render() {
-        const items=this.items.map((elem)=>{
-            return <ItemList key={elem._id} item={elem} onClick={this.props.onClick} />
+        const selected=this.props.selected;
+        const items=this.props.items.map((elem)=>{
+            return <ItemList key={elem._id} item={elem} selected={selected === elem._id} onClick={this.props.onClick} />
         });
         return (
             <div className="contents">
@@ -117,117 +137,48 @@ class ContentList extends React.Component {
     }
 }
 
-class Form1 extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state={
-            open:true, // ARRUMAR AQUI!!
-            veiculo:this.props.elem.veiculo,
-            ano:this.props.elem.ano,
-            marca:this.props.elem.marca,
-            descricao:this.props.elem.descricao,
-            vendido:this.props.elem.vendido
-        }
 
-        this.close=this.close.bind(this);
-    }
-
-    close() {
-        this.setState({open:false})
-    }
-
-    onChange(evt) {
-        const name=evt.target.name;
-        const value=evt.target.value;
-
-        if(name === 'vendido') {
-            const checked=evt.target.checked;
-            this.setState({vendido:checked});
-        }
-    }
-
-
-
-    render() {
-        const title=this.props.title || 'Novo Veículo';
-        const style={
-            color:'#818181'
-        }
-        const thumbSwitchedStyle={
-            backgroundColor:'#487b9e'
-        }
-
-        const confs={
-            floatingLabelFocusStyle:{
-                color:'#487b9e',
-                fontSize:'18px'
-            },
-            floatingLabelStyle:{
-                color:'#818181'
-            },
-            inputStyle:{
-                color:'#505050'
-            },
-            fullWidth:true,
-            underlineFocusStyle:{
-                borderBottomColor:'#487b9e'
-            },
-            underlineStyle:{
-                borderBottomColor:'#818181'
-            }
-        }
-
-
-
-
-
-
-        var actions=[
-            <FlatButton backgroundColor="#45535a" hoverColor="#45535a" className="createButton" label="Add" />,
-            <FlatButton backgroundColor="#45535a" hoverColor="#45535a" className="createButton" label="Fechar" onClick={this.close} />
-        ]
-
-        return (
-            <Dialog modal={true} title={title} open={this.state.open} actions={actions} contentClassName="form-add-edit" actionsContainerClassName="form-add-edit-actions" overlayClassName="form-add-edit-overlay" titleClassName="form-add-edit-title" bodyClassName="form-add-edit-body">
-                <h2>Dialog here!</h2>
-                <div className="half-div">
-                    <TextField {...confs} floatingLabelText="Veículo" name="veiculo" />
-                    <TextField {...confs} floatingLabelText="Ano" name="ano" />
-
-
-                </div>
-                <div className="half-div right">
-                    <TextField {...confs} floatingLabelText="Marca" name="marca" />
-                    <Toggle labelPosition="right" label="Vendido" labelStyle={style} thumbSwitchedStyle={thumbSwitchedStyle} name="vendido" />
-
-                </div>
-                    <TextField {...confs} multiLine={true} rows={5} floatingLabelText="Descrição" name="descricao" />
-            </Dialog>
-        )
-    }
-}
 
 class Content extends React.Component {
     constructor(props) {
         super(props)
         this.state={
-            item:''
+            item:'',
+            selected:''
         }
 
         this.setItem=this.setItem.bind(this);
+        this.item='';
+        this.selected='';
+    }
+
+
+    componentWillReceiveProps(newProps) {
+        newProps.items.forEach((elem)=>{
+            if(elem._id === this.selected) {
+                this.item=elem;
+            }
+        }); 
     }
 
     setItem(item) {
-        this.setState({item:item});
+        this.selected=item._id;
+        // this.setState({item:item, selected: item._id});
+        // this.setState({selected: item._id});
+        this.props.items.forEach((elem)=>{
+            if(elem._id === this.selected) {
+                this.item=elem;
+            }
+        });
+        this.forceUpdate();
     }
 
     render() {
         return (
             <main>
-                <TitleAdd />
-                <ContentList onClick={this.setItem} />
-                <ContentDescr item={this.state.item} />
-                <Form1 />
+                <TitleAdd openForm={this.props.openForm} />
+                <ContentList onClick={this.setItem} items={this.props.items} selected={this.selected} />
+                <ContentDescr item={this.item} openForm={this.props.openForm} />
             </main>
         )
     }
@@ -236,14 +187,85 @@ class Content extends React.Component {
 class App extends React.Component {
     constructor(props) {
         super(props)
+
+        // this.items=[{"_id":"5991c31cc54c131fd9b9ee1b","veiculo":"ONIX HATCH LT 1.0 8V FlexPower 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004424-5","vendido":false},{"_id":"5991c31cc54c131fd9b9ee1d","veiculo":"ONIX HATCH LT 1.4 8V FlexPower 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004425-3","vendido":true},{"_id":"5991c31cc54c131fd9b9ee19","veiculo":"ONIX HATCH Joy 1.0 8V Flex 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004473-3","vendido":false},{"_id":"5991c31cc54c131fd9b9ee16","veiculo":"ONIX HATCH ACTIV 1.4 8V Flex 5P Aut.","marca":"GM - Chevrolet","cod_fipe":"004471-7","vendido":true},{"_id":"5991c31cc54c131fd9b9ee15","veiculo":"ONIX  Lollapalooza 1.0 F.Power 5p Mec. ","marca":"GM - Chevrolet","cod_fipe":"004451-2","vendido":false},{"_id":"5991c31cc54c131fd9b9ee17","veiculo":"ONIX HATCH ACTIV 1.4 8V Flex 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004472-5","vendido":false},{"_id":"5991c31cc54c131fd9b9ee1f","veiculo":"ONIX HATCH LTZ 1.4 8V FlexPower 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004426-1","vendido":false},{"_id":"5991c31cc54c131fd9b9ee1e","veiculo":"ONIX HATCH LTZ 1.4 8V FlexPower 5p Aut. ","marca":"GM - Chevrolet","cod_fipe":"004439-3","vendido":false},{"_id":"5991c31cc54c131fd9b9ee18","veiculo":"ONIX HATCH EFFECT 1.4 8V F.Power 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004460-1","vendido":false},{"_id":"5991c31cc54c131fd9b9ee1c","veiculo":"ONIX HATCH LT 1.4 8V FlexPower 5p Aut.","marca":"GM - Chevrolet","cod_fipe":"004438-5","vendido":false},{"_id":"5991c31cc54c131fd9b9ee1a","veiculo":"ONIX HATCH LS 1.0 8V FlexPower 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004423-7","vendido":false},{"_id":"5991c31cc54c131fd9b9ee20","veiculo":"ONIX HATCH SELEÇÃO 1.0 8V Flex 5p Mec.","marca":"GM - Chevrolet","cod_fipe":"004461-0","vendido":false}]
+
+        this.state={
+            items:[],
+            f1Open:false,
+            covered:false
+        }
+        this.f1Elem={
+            id:'',
+            veiculo:'',
+            ano:'',
+            marca:'',
+            descricao:'',
+            vendido:false
+        };
+        this.openForm=this.openForm.bind(this);
+        this.getList=this.getList.bind(this);
+        this.closeF1=this.closeF1.bind(this);
+
+        this.lastSearch={};
+    }
+
+    // fecha o Form1
+    closeF1() {
+        this.setState({f1Open:false});
+    }
+
+    componentDidMount() {
+        // carregar lista
+        this.getList();
+    }
+
+    getList(params) {
+        if(params && params.clearSearch) {
+            this.lastSearch={};
+        }
+        if(!params) params=this.lastSearch;
+
+        var filter='';
+        // parece que a busca será sempre pelo campo "veiculo", isso não está claro na documentação;
+        params.field='veiculo';
+        if(params.field && params.value) {
+            this.lastSearch=params;
+            filter='?filters='+params.field+'@'+params.value;
+        }
+
+        if(params.id) {
+            filter='/'+params.id;
+        }
+        const baseUrl='/veiculos'+filter;
+
+        this.setState({covered:true});
+        return $.ajax(baseUrl,{
+            method:'GET'
+        }).then((ret)=>{
+            // aqui filtramos p/ apenas 5; na documentação não há informações sobre paginação e o retorno é enorme;
+            // console.log('ret list',Array.isArray(ret));
+            ret=ret.slice(-5);
+            this.setState({covered:false});
+            this.setState({items:ret});
+        });
+
+    }
+
+    openForm(elem) {
+        this.f1Elem=Object.assign(this.f1Elem,elem);
+        this.setState({f1Open:true});
     }
 
     render() {
+        const covered=this.state.covered ? '' : ' hidden';
         return (
             <MuiThemeProvider>
-                <div>
-                    <Topbar />
-                    <Content />
+                <div id="appRoot">
+                    <div className={'cover1'+covered}><img src="/imgs/loading.gif" alt="loading" /></div>
+                    <Topbar search={this.getList} />
+                    <Content openForm={this.openForm} items={this.state.items} />
+                    <Form1 open={this.state.f1Open} elem={this.f1Elem} getList={this.getList} close={this.closeF1} />
                 </div>
             </MuiThemeProvider>
         )
